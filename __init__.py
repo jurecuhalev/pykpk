@@ -25,7 +25,7 @@ def search(term, search_type='organ'):
     full_url = URL + path + '?' + urlencode(params)
     data = requests.get(full_url)
 
-    return data.json
+    return data
 
 def get_organ(organ_id):
     path = '/organ/%s/' % organ_id
@@ -43,11 +43,13 @@ def get_organ(organ_id):
 def get_podj(podj_id):
     pass
 
-def get_organ_podj(organ_id, podj_id):
-    path = '/organ/%s/podj/%s/' % (organ_id, podj_id)
-    data = requests.get(URL+path)
+def get_organ_podj(organ_id, podj_id, text=None):
+    if not text:
+        path = '/organ/%s/podj/%s/' % (organ_id, podj_id)
+        data = requests.get(URL+path)
+        text = data.text
 
-    root = fromstring(data.text)
+    root = fromstring(text)
     content = { 'sums-trans': [] }
 
     sel = CSSSelector('#sums-trans tr')
@@ -66,6 +68,7 @@ def get_organ_podj(organ_id, podj_id):
     return content
 
 if __name__ == '__main__':
+    pass
     # print search('EPK')
     # print get_organ(38580)
-    print get_organ_podj(38580, 56329245)
+    # print get_organ_podj(38580, 56329245)
